@@ -135,7 +135,6 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
     	}
     	
     	protected void onPostExecute(List<Show> shows) {
-//            showDialog("Downloaded " + result + " bytes");
     		displayShows();
         }
     }
