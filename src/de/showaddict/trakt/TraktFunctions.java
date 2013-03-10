@@ -21,7 +21,7 @@ import de.showaddict.entity.Show;
 public class TraktFunctions {
 	
 	public static final String API_KEY = "4bde279d0fe5826ab48e2f0f91117474";
-	public static final String USERNAME = "leche43";
+	public static final String USERNAME = "JaxxTe";
 	public static final String LIBRARY_URL = "http://api.trakt.tv/user/library/shows/all.json/";
 	
 	public static List<Show> getAllShowsFromLibrary() {
