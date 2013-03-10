@@ -1,0 +1,109 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  Internal Error (classFileParser.cpp:3494), pid=7256, tid=7312
+#  Error: ShouldNotReachHere()
+#
+# JRE version: 6.0_34-b04
+# Java VM: Java HotSpot(TM) Client VM (20.9-b04 mixed mode windows-x86 )
+# If you would like to submit a bug report, please visit:
+#   http://java.sun.com/webapps/bugreport/crash.jsp
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x005e9800):  JavaThread "Unknown thread" [_thread_in_vm, id=7312, stack(0x00370000,0x003c0000)]
+
+Stack: [0x00370000,0x003c0000],  sp=0x003bf86c,  free space=318k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x133d0a]
+V  [jvm.dll+0x12e9bb]
+V  [jvm.dll+0x1648e]
+V  [jvm.dll+0x17ccf]
+V  [jvm.dll+0x26d75]
+V  [jvm.dll+0x275b6]
+V  [jvm.dll+0x27965]
+V  [jvm.dll+0x279f9]
+V  [jvm.dll+0x27abc]
+V  [jvm.dll+0x27b3a]
+V  [jvm.dll+0x27c1d]
+V  [jvm.dll+0x27ee9]
+V  [jvm.dll+0x6c5e3]
+V  [jvm.dll+0x6c9bc]
+V  [jvm.dll+0xf9f6c]
+V  [jvm.dll+0x1188ab]
+V  [jvm.dll+0x9ec70]
+C  [javaw.exe+0x1657]
+C  [javaw.exe+0x1e2c]
+C  [javaw.exe+0x8614]
+C  [kernel32.dll+0x4ed6c]  BaseThreadInitThunk+0x12
+C  [ntdll.dll+0x6377b]  RtlInitializeExceptionChain+0xef
+C  [ntdll.dll+0x6374e]  RtlInitializeExceptionChain+0xc2
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x005e9800 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=7312, stack(0x00370000,0x003c0000)]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+Dynamic libraries:
+0x00400000 - 0x00425000 	C:\Program Files\Java\jdk1.6.0_34\bin\javaw.exe
+0x777d0000 - 0x7790c000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x77250000 - 0x77324000 	C:\WINDOWS\system32\kernel32.dll
+0x75b10000 - 0x75b5b000 	C:\WINDOWS\system32\KERNELBASE.dll
+0x77630000 - 0x776d0000 	C:\WINDOWS\system32\ADVAPI32.dll
+0x77930000 - 0x779dc000 	C:\WINDOWS\system32\msvcrt.dll
+0x779e0000 - 0x779f9000 	C:\WINDOWS\SYSTEM32\sechost.dll
+0x76c00000 - 0x76ca1000 	C:\WINDOWS\system32\RPCRT4.dll
+0x76f80000 - 0x77049000 	C:\WINDOWS\system32\USER32.dll
+0x75eb0000 - 0x75efe000 	C:\WINDOWS\system32\GDI32.dll
+0x75c20000 - 0x75c2a000 	C:\WINDOWS\system32\LPK.dll
+0x75f00000 - 0x75f9d000 	C:\WINDOWS\system32\USP10.dll
+0x77910000 - 0x7792f000 	C:\WINDOWS\system32\IMM32.DLL
+0x76eb0000 - 0x76f7c000 	C:\WINDOWS\system32\MSCTF.dll
+0x7c340000 - 0x7c396000 	C:\Program Files\Java\jdk1.6.0_34\jre\bin\msvcr71.dll
+0x6d8c0000 - 0x6db6f000 	C:\Program Files\Java\jdk1.6.0_34\jre\bin\client\jvm.dll
+0x740d0000 - 0x74102000 	C:\WINDOWS\system32\WINMM.dll
+0x75850000 - 0x7589c000 	C:\WINDOWS\system32\apphelp.dll
+0x6d870000 - 0x6d87c000 	C:\Program Files\Java\jdk1.6.0_34\jre\bin\verify.dll
+0x6d3d0000 - 0x6d3ef000 	C:\Program Files\Java\jdk1.6.0_34\jre\bin\java.dll
+0x6d420000 - 0x6d449000 	C:\Program Files\Java\jdk1.6.0_34\jre\bin\jdwp.dll
+0x6d740000 - 0x6d746000 	C:\Program Files\Java\jdk1.6.0_34\jre\bin\npt.dll
+0x6d8b0000 - 0x6d8bf000 	C:\Program Files\Java\jdk1.6.0_34\jre\bin\zip.dll
+0x76bf0000 - 0x76bf5000 	C:\WINDOWS\system32\PSAPI.DLL
+
+VM Arguments:
+jvm_args: -agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:52647 -Dfile.encoding=Cp1252 -Xbootclasspath:C:\Users\tgonzale\Documents\Privat\adt-bundle-windows-x86-20130219\sdk\platforms\android-17\android.jar 
+java_command: TraktFunctions
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.6.0_34
+CLASSPATH=.;C:\Program Files\Java\jre6\lib\ext\QTJava.zip
+PATH=C:\Program Files\Java\jdk1.6.0_34\jre\bin;C:/Program Files/Java/jdk1.6.0_34/bin/../jre/bin/client;C:/Program Files/Java/jdk1.6.0_34/bin/../jre/bin;C:/Program Files/Java/jdk1.6.0_34/bin/../jre/lib/i386;C:\oraclexe\app\oracle\product\11.2.0\server\bin;C:\Program Files\Java\jdk1.6.0_34\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\TrueCrypt;W:\ProgramFiles\apache-tomcat-6.0.18;C:\Program Files\Microsoft SQL Server\110\Tools\Binn\;C:\Program Files\SlikSvn\bin;C:\Program Files\QuickTime\QTSystem\;C:\Program Files\IDM Computer Solutions\UltraEdit;C:\Program Files\TrueCrypt;C:\Users\tgonzale\Documents\Privat\adt-bundle-windows-x86-20130219\eclipse;
+USERNAME=tgonzale
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=x86 Family 6 Model 42 Stepping 7, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 7 Build 7601 Service Pack 1
+
+CPU:total 4 (2 cores per cpu, 2 threads per core) family 6 model 42 stepping 7, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, ht
+
+Memory: 4k page, physical 3581168k(161360k free), swap 7160580k(847932k free)
+
+vm_info: Java HotSpot(TM) Client VM (20.9-b04) for windows-x86 JRE (1.6.0_34-b04), built on Jul 19 2012 00:46:28 by "java_re" with MS VC++ 7.1 (VS2003)
+
+time: Wed Mar 06 18:59:49 2013
+elapsed time: 0 seconds
+
