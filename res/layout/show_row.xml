@@ -1,0 +1,101 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="100dip"
+    android:orientation="horizontal"
+    android:id="@+id/showRow">
+    
+        <!--  ListRow Left sied Thumbnail image -->
+    <LinearLayout android:id="@+id/thumbnail"
+        android:layout_width="60dip"
+        android:layout_height="100dip"
+        android:layout_marginRight="5dip"
+        android:layout_alignParentLeft="true">
+ 
+        <ImageView
+            android:id="@+id/show_image"
+            android:layout_width="match_parent"
+        	android:layout_height="match_parent"
+            android:src="@drawable/example"
+            android:contentDescription="@string/show_image_description"/>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
+        <TextView
+        android:id="@+id/show_title"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+        android:layout_marginTop="5dip"
+        android:textColor="#040404"
+        android:typeface="sans"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textIsSelectable="true"/> 	
+        
+    <LinearLayout 
+        android:id="@+id/nextEpisode"
+        android:orientation="horizontal"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@+id/show_title"
+    	>
+        
+    <!-- Next Episode String -->
+    <TextView
+        android:id="@+id/nextEpisodeString"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#343434"
+        android:textSize="12sp"
+        android:layout_marginTop="1dip"
+        android:text="@string/show_row_nextEpisode" />
+ 
+    <!-- Date of next Epsiode -->
+
+	
+    <TextView
+        android:id="@+id/datum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"   
+        android:layout_marginTop="1dip"
+        android:layout_marginLeft="5dip"
+        android:text="15.03.2013"
+        android:textColor="#10bcc9"
+        android:textSize="12sp"
+         />
+    </LinearLayout>
+    <LinearLayout 
+        android:orientation="horizontal"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@+id/nextEpisode"
+    	android:id="@+id/nextEpisodeInfo">
+        
+    <!-- Next Episode String -->
+    <TextView
+        android:id="@+id/nextEpisodeNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#343434"
+        android:textSize="12sp"
+        android:layout_marginTop="1dip"
+        android:text="S01E04" />
+ 
+    <!-- Date of next Epsiode -->
+
+
+    <TextView
+        android:id="@+id/nextEpisodeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"   
+        android:layout_marginTop="1dip"
+        android:layout_marginLeft="5dip"
+        android:text="The huge fight"
+        android:textColor="#10bcc9"
+        android:textSize="12sp"
+         />
+    </LinearLayout>
+</RelativeLayout>
+</RelativeLayout>

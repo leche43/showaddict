@@ -5,5 +5,7 @@
     <string name="action_settings">Einstellungen</string>
     <string name="dropdown_series">Serien</string>
     <string name="dropdown_movies">Filme</string>
+    <string name="show_image_description">show the image of a show</string>
+    <string name="show_row_nextEpisode">Nächste Episode:</string>
 
 </resources>

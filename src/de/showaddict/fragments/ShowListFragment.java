@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import de.showaddict.R;
+import de.showaddict.adapter.ShowListAdapter;
 import de.showaddict.entity.Show;
 import de.showaddict.persistence.ShowDatabaseHelper;
 
@@ -25,8 +26,8 @@ public class ShowListFragment extends Fragment {
         
         ShowDatabaseHelper sdh = new ShowDatabaseHelper(getActivity());
     	List<Show> shows = sdh.getAllShows();
-    	ArrayAdapter<Show> adapter = new ArrayAdapter<Show>(getActivity(),
-    	        android.R.layout.simple_list_item_1, shows);
+    	
+    	ShowListAdapter adapter = new ShowListAdapter(getActivity().getApplicationContext(), shows);
     	ListView listView = (ListView) rootView.findViewById(R.id.showList);
     	listView.setAdapter(adapter);
         
