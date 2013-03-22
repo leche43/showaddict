@@ -8,7 +8,7 @@
     <LinearLayout android:id="@+id/thumbnail"
         android:layout_width="60dip"
         android:layout_height="100dip"
-        android:layout_marginRight="5dip"
+        android:layout_marginRight="10dip"
         android:layout_alignParentLeft="true">
  
         <ImageView
