@@ -118,7 +118,7 @@ public class NextEpisode {
 	 * @author Nico
 	 *
 	 */
-	//TODO ander loesen
+	//TODO anders loesen
 	public class Images {
 		private String screen;
 

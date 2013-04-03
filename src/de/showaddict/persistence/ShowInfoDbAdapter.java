@@ -1,10 +1,15 @@
 package de.showaddict.persistence;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
 import de.showaddict.entity.ShowInfo;
+import de.showaddict.entity.ShowInfo.Images;
 
 public class ShowInfoDbAdapter extends AbstractDbAdapter {
 	
@@ -16,11 +21,16 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 	public static final String COLUMN_TVRAGE_ID = "tvrage_id";
 	public static final String COLUMN_URL = "url";
 	public static final String COLUMN_PLAYS = "plays";
+	public static final String COLUMN_YEAR = "year";
+	public static final String COLUMN_POSTER= "poster";
+	public static final String COLUMN_FANART = "fanart";
+	public static final String COLUMN_BANNER = "banner";
+	public static final String COLUMN_GENRE = "genre";
 	public static final String COLUMN_SHOW_FK = "show_fk";
 	
-	private String[] allColumns = { COLUMN_ID, COLUMN_IMBD_ID, COLUMN_PLAYS,
-									COLUMN_TVDB_ID, COLUMN_TVRAGE_ID,
-									COLUMN_URL};
+	private String[] allColumns = { COLUMN_ID, COLUMN_TVDB_ID, COLUMN_IMBD_ID, COLUMN_TVRAGE_ID, COLUMN_URL,
+									COLUMN_PLAYS, COLUMN_YEAR, COLUMN_POSTER, COLUMN_FANART, COLUMN_BANNER, 
+									COLUMN_GENRE};
 	
 	public static final String SHOW_INFO_TABLE_CREATE = "CREATE TABLE "
 			+ TABLE_NAME + "(" + COLUMN_ID
@@ -28,6 +38,11 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 			+ " TEXT, " + COLUMN_IMBD_ID + " INTEGER, " + COLUMN_TVRAGE_ID
 			+ " INTEGER, " + COLUMN_URL + " TEXT, "
 			+ COLUMN_PLAYS + " INTEGER," 
+			+ COLUMN_YEAR + " INTEGER," 
+			+ COLUMN_POSTER + " TEXT," 
+			+ COLUMN_FANART + " TEXT," 
+			+ COLUMN_BANNER + " TEXT," 
+			+ COLUMN_GENRE + " TEXT," 
 			+ COLUMN_SHOW_FK + " INTEGER, "
 			+ "FOREIGN KEY(" + COLUMN_SHOW_FK + ") REFERENCES " + ShowDbAdapter.TABLE_NAME + "(" + ShowDbAdapter.COLUMN_ID + ")"
 			+ ");";
@@ -46,6 +61,16 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 	    values.put(COLUMN_TVRAGE_ID, showInfo.getTvrage_id());
 	    values.put(COLUMN_URL, showInfo.getUrl());
 	    values.put(COLUMN_PLAYS, showInfo.getPlays());
+	    values.put(COLUMN_YEAR, showInfo.getYear());
+	    Images image = showInfo.getImages();
+	    values.put(COLUMN_POSTER, image.getPoster());
+	    values.put(COLUMN_FANART, image.getFanart());
+	    values.put(COLUMN_BANNER, image.getBanner());
+	    String genres = null;
+	    for(String genre : showInfo.getGenres()) {
+	    	genres += genre + ",";
+	    }
+	    values.put(COLUMN_GENRE, genres);
 	    values.put(COLUMN_SHOW_FK, showId);
 	    
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
@@ -86,10 +111,8 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 		ShowInfo showInfo = buildShowInfoAllColumns(cursor);
 			
 		cursor.close();
-		close();
 		return showInfo;
 	}
-
 
 	/**
 	 * method to build a new show info object from db
@@ -102,11 +125,21 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 	private ShowInfo buildShowInfoAllColumns(Cursor cursor) {
 		ShowInfo showInfo = new ShowInfo();
 		showInfo.setId(cursor.getInt(0));
-		showInfo.setImdb_id(cursor.getString(1));
-		showInfo.setPlays(cursor.getInt(2));
-		showInfo.setTvdb_id(cursor.getInt(4));
-		showInfo.setTvrage_id(cursor.getInt(5));
-		showInfo.setUrl(cursor.getString(6));
+		showInfo.setTvdb_id(cursor.getInt(1));
+		showInfo.setImdb_id(cursor.getString(2));
+		showInfo.setTvrage_id(cursor.getInt(3));
+		showInfo.setUrl(cursor.getString(4));
+		showInfo.setPlays(cursor.getInt(5));
+		showInfo.setYear(cursor.getInt(6));
+		Images image = showInfo.new Images();
+		image.setPoster(cursor.getString(7));
+		image.setFanart(cursor.getString(8));
+		image.setBanner(cursor.getString(9));
+		showInfo.setImages(image);
+		List<String> genreList = new ArrayList<String>();
+		String genres = cursor.getString(10);
+		genreList = Arrays.asList(genres.split(","));
+		showInfo.setGenres(genreList);
 		return showInfo;
 	}
 

@@ -34,7 +34,7 @@ public class TraktFunctions {
 	
 	public static final String NO_NEXT_EPISODE = "\"next_episode\":false,";
 	
-	public static List<ShowInfo> getAllShowsFromLibrary() {
+	public static List<ShowInfo> getAllShowsDetails() {
 		List<ShowInfo> list = new ArrayList<ShowInfo>();
 
 		String url = LIBRARY_URL + API_KEY + "/" + USERNAME;
@@ -52,15 +52,24 @@ public class TraktFunctions {
 	 * @return
 	 */
 	public static List<Show> getAllWatchedShowsFromLibrary() {
-		List<Show> list = new ArrayList<Show>();
+		List<Show> shows = new ArrayList<Show>();
 		String url = USER_PROGRESS_WATCHED_URL + API_KEY + "/"+ USERNAME;
 		
 		String json = doRequest(url);
 		
-		list = parseAllWatchedShowsJson(json);
+		shows = parseAllWatchedShowsJson(json);
+		List<ShowInfo> showInfos = getAllShowsDetails();
+		for(Show show : shows) {
+			for(ShowInfo showInfo : showInfos) {
+				if(show.getShowInfo().getTitle().equals(showInfo.getTitle())) {
+					show.setShowInfo(showInfo);
+					continue;
+				}
+				
+			}
+		}
 		
-		
-		return list;
+		return shows;
 	}
 	
 	/**
@@ -113,12 +122,11 @@ public class TraktFunctions {
 	}
 	
 	private static String checkIfNextEpisodeFalse(String json) {
-		String newJson = "";
 		if(json.contains(NO_NEXT_EPISODE)) {
-			newJson = json.replaceAll(NO_NEXT_EPISODE, " ");
+			json = json.replaceAll(NO_NEXT_EPISODE, " ");
 		}
 		
-		return newJson;
+		return json;
 	}
 
 	/**

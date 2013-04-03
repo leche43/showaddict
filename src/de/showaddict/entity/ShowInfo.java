@@ -1,5 +1,7 @@
 package de.showaddict.entity;
 
+import java.util.List;
+
 public class ShowInfo {
 	private int id;
 	private String title;
@@ -9,12 +11,9 @@ public class ShowInfo {
     private int tvrage_id;
     private int plays;
     private String url;
-//    "images": {
-//        "poster": "http://trakt.us/images/posters/735.8.jpg",
-//        "fanart": "http://trakt.us/images/fanart/735.8.jpg",
-//        "banner": "http://trakt.us/images/banners/735.8.jpg"
-//    },
-//    "genres": ["Animation", "Comedy"]
+    private Images images;
+    private List<String> genres;
+
     public ShowInfo() {
     	
     }
@@ -72,6 +71,22 @@ public class ShowInfo {
 		this.url = url;
 	}
 
+	public Images getImages() {
+		return images;
+	}
+
+	public void setImages(Images images) {
+		this.images = images;
+	}
+
+	public List<String> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(List<String> genres) {
+		this.genres = genres;
+	}
+
 	@Override
 	public String toString() {
 		return title;
@@ -81,6 +96,8 @@ public class ShowInfo {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((genres == null) ? 0 : genres.hashCode());
+		result = prime * result + ((images == null) ? 0 : images.hashCode());
 		result = prime * result + ((imdb_id == null) ? 0 : imdb_id.hashCode());
 		result = prime * result + plays;
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
@@ -100,6 +117,16 @@ public class ShowInfo {
 		if (getClass() != obj.getClass())
 			return false;
 		ShowInfo other = (ShowInfo) obj;
+		if (genres == null) {
+			if (other.genres != null)
+				return false;
+		} else if (!genres.equals(other.genres))
+			return false;
+		if (images == null) {
+			if (other.images != null)
+				return false;
+		} else if (!images.equals(other.images))
+			return false;
 		if (imdb_id == null) {
 			if (other.imdb_id != null)
 				return false;
@@ -124,6 +151,85 @@ public class ShowInfo {
 		if (year != other.year)
 			return false;
 		return true;
+	}
+
+
+
+	/**
+	 * Klasse um urls zu Bildern einer Folge zu halten. Ist nur so gebaut, da man es so am besten parsen kann.
+	 * 
+	 * @author Nico
+	 *
+	 */
+	public class Images {
+		
+		private String poster;
+		private String fanart;
+		private String banner;
+		
+		public String getPoster() {
+			return poster;
+		}
+		public void setPoster(String poster) {
+			this.poster = poster;
+		}
+		public String getFanart() {
+			return fanart;
+		}
+		public void setFanart(String fanart) {
+			this.fanart = fanart;
+		}
+		public String getBanner() {
+			return banner;
+		}
+		public void setBanner(String banner) {
+			this.banner = banner;
+		}
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + getOuterType().hashCode();
+			result = prime * result
+					+ ((banner == null) ? 0 : banner.hashCode());
+			result = prime * result
+					+ ((fanart == null) ? 0 : fanart.hashCode());
+			result = prime * result
+					+ ((poster == null) ? 0 : poster.hashCode());
+			return result;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Images other = (Images) obj;
+			if (!getOuterType().equals(other.getOuterType()))
+				return false;
+			if (banner == null) {
+				if (other.banner != null)
+					return false;
+			} else if (!banner.equals(other.banner))
+				return false;
+			if (fanart == null) {
+				if (other.fanart != null)
+					return false;
+			} else if (!fanart.equals(other.fanart))
+				return false;
+			if (poster == null) {
+				if (other.poster != null)
+					return false;
+			} else if (!poster.equals(other.poster))
+				return false;
+			return true;
+		}
+		private ShowInfo getOuterType() {
+			return ShowInfo.this;
+		}
+		
 	}
 	
 	
