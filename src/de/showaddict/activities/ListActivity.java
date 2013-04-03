@@ -1,6 +1,7 @@
 package de.showaddict.activities;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 import android.app.ActionBar;
 import android.content.Context;
@@ -14,7 +15,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import de.showaddict.R;
 import de.showaddict.entity.Show;
-import de.showaddict.entity.ShowInfo;
 import de.showaddict.fragments.LoginFragment;
 import de.showaddict.fragments.MovieListFragment;
 import de.showaddict.fragments.ShowListFragment;
@@ -22,6 +22,8 @@ import de.showaddict.persistence.Dao;
 import de.showaddict.trakt.TraktFunctions;
 
 public class ListActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
+	
+	public static Logger LOGGER = Logger.getLogger(ListActivity.class.getName());
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -64,6 +66,7 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
      * @param view
      */
     public void downloadShows(View view) {
+    	LOGGER.info("LOGIN BUTTON PRESSED");
     	TraktFunctionsService tfs = new TraktFunctionsService(getApplicationContext());
     	tfs.execute();
     }
@@ -130,8 +133,9 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
     	@Override
     	protected List<Show> doInBackground(Object... arg0) {
 //    		shows = TraktFunctions.getAllShowsFromLibrary();
+    		LOGGER.info("STARTED DOWNLOADING SHOWS");
     		shows = TraktFunctions.getAllWatchedShowsFromLibrary();
-    		
+    		LOGGER.info("FINISHED DOWNLOADING SHOWS");
     		Dao dao = new Dao(context);
     		dao.createShows(shows);
     		return shows;

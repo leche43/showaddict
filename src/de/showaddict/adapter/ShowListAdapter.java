@@ -1,6 +1,9 @@
 package de.showaddict.adapter;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.showaddict.R;
 import de.showaddict.entity.MockShow;
-import de.showaddict.entity.Show;
+import de.showaddict.entity.NextEpisode;
 
 public class ShowListAdapter extends ArrayAdapter<MockShow> {
 	
@@ -26,6 +29,10 @@ public class ShowListAdapter extends ArrayAdapter<MockShow> {
 	
 	static class ViewHolder {
 		TextView titleView;
+		TextView nextEpisodeNumberView;
+		TextView nextEpisodeTitleView;
+		TextView nextEpisodeString;
+		TextView nextEpisodeDate;
 	}
 	
 	@Override
@@ -39,6 +46,10 @@ public class ShowListAdapter extends ArrayAdapter<MockShow> {
 			holder = new ViewHolder();
 			//get row elements
 			holder.titleView = (TextView) convertView.findViewById(R.id.show_title);
+			holder.nextEpisodeNumberView = (TextView) convertView.findViewById(R.id.nextEpisodeNumber);
+			holder.nextEpisodeTitleView = (TextView) convertView.findViewById(R.id.nextEpisodeTitle);
+			holder.nextEpisodeString = (TextView) convertView.findViewById(R.id.nextEpisodeString);
+			holder.nextEpisodeDate = (TextView) convertView.findViewById(R.id.nextEpisodeDate);
 			
 			convertView.setTag(holder);
 		} else {
@@ -46,8 +57,44 @@ public class ShowListAdapter extends ArrayAdapter<MockShow> {
 		}
 		
 		holder.titleView.setText(mockShows.get(position).getTitle());
+		if(mockShows.get(position).getNextEpisode() != null) {
+			holder.nextEpisodeNumberView.setText(prepareEpisodeNumber(mockShows.get(position).getNextEpisode()));
+			holder.nextEpisodeTitleView.setText(mockShows.get(position).getNextEpisode().getTitle());
+			holder.nextEpisodeString.setText(R.string.show_row_nextEpisode);
+			//TODO check locale
+			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+			String date = sdf.format(new Date(mockShows.get(position).getNextEpisode().getFirst_aired()));
+			holder.nextEpisodeDate.setText(date);
+		} else {
+			//TODO in string values schreiben
+			holder.nextEpisodeNumberView.setText(R.string.no_more_episode);
+			holder.nextEpisodeTitleView.setText("");
+			holder.nextEpisodeString.setText("");
+			holder.nextEpisodeDate.setText("");
+		}
 		
 		return convertView;
+	}
+
+	/**
+	 * Baut einen String auf zb.: S01E01
+	 * 
+	 * @param nextEpisode
+	 * @return
+	 */
+	private CharSequence prepareEpisodeNumber(NextEpisode nextEpisode) {
+		Integer seasonNumber = nextEpisode.getSeason();
+		Integer episodeNumber = nextEpisode.getNum();
+		String seasonAndEpisode = "S";
+		if(seasonNumber < 10) {
+			seasonAndEpisode += 0;
+		}
+		seasonAndEpisode += seasonNumber + "E";
+		if(episodeNumber < 10) {
+			seasonAndEpisode += 0;
+		}
+		seasonAndEpisode += episodeNumber;
+		return seasonAndEpisode;
 	}
 
 }

@@ -61,9 +61,13 @@ public class SeasonDbAdapter extends AbstractDbAdapter {
 		    id = db.insert(TABLE_NAME, null,
 		    		values);
 		} else {
-			updateSeason(values, cursor.getInt(0));
+			Season seasonDb = buildSeasonAllColumns(cursor);
+			if(!season.equals(seasonDb)) {
+				updateSeason(values, cursor.getInt(0));
+			}
 			id = cursor.getInt(0);
 		}
+		cursor.close();
 	    
 	    return id;
 	}
@@ -85,13 +89,7 @@ public class SeasonDbAdapter extends AbstractDbAdapter {
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
-			Season season = new Season();
-			season.setId(cursor.getInt(0));
-			season.setSeason(cursor.getInt(1));
-			season.setPercentage(cursor.getInt(2));
-			season.setAired(cursor.getInt(3));
-			season.setCompleted(cursor.getInt(4));
-			season.setLeft(cursor.getInt(5));
+			Season season = buildSeasonAllColumns(cursor);
 			
 			seasons.add(season);
 		}
@@ -99,6 +97,25 @@ public class SeasonDbAdapter extends AbstractDbAdapter {
 		cursor.close();
 		close();
 		return seasons;
+	}
+
+	/**
+	 * method to build a new season object from db
+	 * 
+	 * requires all columns
+	 * 
+	 * @param cursor
+	 * @return
+	 */
+	private Season buildSeasonAllColumns(Cursor cursor) {
+		Season season = new Season();
+		season.setId(cursor.getInt(0));
+		season.setSeason(cursor.getInt(1));
+		season.setPercentage(cursor.getInt(2));
+		season.setAired(cursor.getInt(3));
+		season.setCompleted(cursor.getInt(4));
+		season.setLeft(cursor.getInt(5));
+		return season;
 	}
 
 }

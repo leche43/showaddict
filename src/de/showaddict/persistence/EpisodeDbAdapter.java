@@ -50,11 +50,8 @@ public class EpisodeDbAdapter extends AbstractDbAdapter {
 		    db.insert(TABLE_NAME, null,
 		    		values);
 		} else {
-			boolean watched = false;
-			if(cursor.getInt(2) == 1) {
-				watched = true;
-			}
-			if(episode.getWatched() != watched) {
+			Episode episodeDb = buildEpisodeAllColumns(cursor);
+			if(!episode.equals(episodeDb)) {
 				updateEpisode(values, cursor.getInt(0));
 			}
 		}
@@ -76,15 +73,7 @@ public class EpisodeDbAdapter extends AbstractDbAdapter {
 
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
-			Episode episode = new Episode();
-			episode.setId(cursor.getInt(0));
-			episode.setEpisode(cursor.getInt(1));
-			Integer watched = cursor.getInt(2);
-			if(watched == 1) {
-				episode.setWatched(true);
-			} else {
-				episode.setWatched(false);
-			}
+			Episode episode = buildEpisodeAllColumns(cursor);
 
 			episodes.add(episode);
 			cursor.moveToNext();
@@ -93,6 +82,27 @@ public class EpisodeDbAdapter extends AbstractDbAdapter {
 		close();
 		
 		return episodes;
+	}
+
+	/**
+	 * method to build a new episode object from db
+	 * 
+	 * requires all columns
+	 * 
+	 * @param cursor
+	 * @return
+	 */
+	private Episode buildEpisodeAllColumns(Cursor cursor) {
+		Episode episode = new Episode();
+		episode.setId(cursor.getInt(0));
+		episode.setEpisode(cursor.getInt(1));
+		Integer watched = cursor.getInt(2);
+		if(watched == 1) {
+			episode.setWatched(true);
+		} else {
+			episode.setWatched(false);
+		}
+		return episode;
 	}
 
 }

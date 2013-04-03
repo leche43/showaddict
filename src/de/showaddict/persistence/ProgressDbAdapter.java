@@ -52,10 +52,12 @@ public class ProgressDbAdapter extends AbstractDbAdapter {
 		    db.insert(TABLE_NAME, null,
 		    		values);
 		} else {
-			if(progress.getPercentage() != cursor.getInt(1)) {
+			Progress progressDb = buildProgressAllColumns(cursor);
+			if(!progress.equals(progressDb)) {
 				updateProgress(values, cursor.getInt(0));
 			} 
 		}
+		cursor.close();
 	}
 	
 	private void updateProgress(ContentValues values, int progressId) {
@@ -72,15 +74,28 @@ public class ProgressDbAdapter extends AbstractDbAdapter {
 
 		cursor.moveToFirst();
 		
+		Progress progress = buildProgressAllColumns(cursor);
+			
+		cursor.close();
+		close();
+		return progress;
+	}
+
+	/**
+	 * method to build a new progress object from db
+	 * 
+	 * requires all columns
+	 * 
+	 * @param cursor
+	 * @return
+	 */
+	private Progress buildProgressAllColumns(Cursor cursor) {
 		Progress progress = new Progress();
 		progress.setId(cursor.getInt(0));
 		progress.setPercentage(cursor.getInt(1));
 		progress.setAired(cursor.getInt(2));
 		progress.setCompleted(cursor.getInt(3));
 		progress.setLeft(cursor.getInt(4));
-			
-		cursor.close();
-		close();
 		return progress;
 	}
 }

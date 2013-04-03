@@ -59,8 +59,12 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 		    db.insert(TABLE_NAME, null,
 		    		values);
 		} else {
-			updateShowInfo(values, cursor.getInt(0));
+			ShowInfo showInfoDb = buildShowInfoAllColumns(cursor);
+			if(showInfo.equals(showInfoDb)) {
+				updateShowInfo(values, cursor.getInt(0));
+			}
 		}
+		cursor.close();
 	}
 	private void updateShowInfo(ContentValues values, long showInfoId) {
 		LOGGER.info("STARTED UPDATE SHOW INFO: " + showInfoId);
@@ -81,6 +85,23 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 
 		cursor.moveToFirst();
 		
+		ShowInfo showInfo = buildShowInfoAllColumns(cursor);
+			
+		cursor.close();
+		close();
+		return showInfo;
+	}
+
+
+	/**
+	 * method to build a new show info object from db
+	 * 
+	 * requires all columns
+	 * 
+	 * @param cursor
+	 * @return
+	 */
+	private ShowInfo buildShowInfoAllColumns(Cursor cursor) {
 		ShowInfo showInfo = new ShowInfo();
 		showInfo.setId(cursor.getInt(0));
 		showInfo.setImdb_id(cursor.getString(1));
@@ -89,9 +110,6 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 		showInfo.setTvdb_id(cursor.getInt(4));
 		showInfo.setTvrage_id(cursor.getInt(5));
 		showInfo.setUrl(cursor.getString(6));
-			
-		cursor.close();
-		close();
 		return showInfo;
 	}
 

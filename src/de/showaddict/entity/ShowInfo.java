@@ -72,4 +72,55 @@ public class ShowInfo {
 	public String toString() {
 		return title;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((imdb_id == null) ? 0 : imdb_id.hashCode());
+		result = prime * result + plays;
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		result = prime * result + tvdb_id;
+		result = prime * result + tvrage_id;
+		result = prime * result + ((url == null) ? 0 : url.hashCode());
+		result = prime * result + year;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ShowInfo other = (ShowInfo) obj;
+		if (imdb_id == null) {
+			if (other.imdb_id != null)
+				return false;
+		} else if (!imdb_id.equals(other.imdb_id))
+			return false;
+		if (plays != other.plays)
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		if (tvdb_id != other.tvdb_id)
+			return false;
+		if (tvrage_id != other.tvrage_id)
+			return false;
+		if (url == null) {
+			if (other.url != null)
+				return false;
+		} else if (!url.equals(other.url))
+			return false;
+		if (year != other.year)
+			return false;
+		return true;
+	}
+	
+	
 }

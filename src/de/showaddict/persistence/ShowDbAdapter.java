@@ -91,13 +91,14 @@ public class ShowDbAdapter extends AbstractDbAdapter {
 
 	public List<MockShow> getAllMockShows() {
 		List<MockShow> mockShows = new ArrayList<MockShow>();
-		Cursor cursor = db.query(TABLE_NAME, new String[]{COLUMN_TITLE}, null, null, null, null,
+		Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null,
 				null);
 		
 		cursor.moveToFirst();
 		while (!cursor.isAfterLast()) {
 			MockShow mockShow = new MockShow();
-			mockShow.setTitle(cursor.getString(0));
+			mockShow.setShowId(cursor.getInt(0));
+			mockShow.setTitle(cursor.getString(1));
 
 
 			mockShows.add(mockShow);

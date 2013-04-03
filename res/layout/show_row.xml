@@ -56,14 +56,14 @@
 
 	
     <TextView
-        android:id="@+id/datum"
+        android:id="@+id/nextEpisodeDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"   
         android:layout_marginTop="1dip"
         android:layout_marginLeft="5dip"
-        android:text="15.03.2013"
         android:textColor="#10bcc9"
         android:textSize="12sp"
+        android:textIsSelectable="true"
          />
     </LinearLayout>
     <LinearLayout 
@@ -81,7 +81,7 @@
         android:textColor="#343434"
         android:textSize="12sp"
         android:layout_marginTop="1dip"
-        android:text="S01E04" />
+        android:textIsSelectable="true"/>
  
     <!-- Date of next Epsiode -->
 
@@ -92,9 +92,9 @@
         android:layout_height="wrap_content"   
         android:layout_marginTop="1dip"
         android:layout_marginLeft="5dip"
-        android:text="The huge fight"
         android:textColor="#10bcc9"
         android:textSize="12sp"
+        android:textIsSelectable="true"
          />
     </LinearLayout>
 </RelativeLayout>

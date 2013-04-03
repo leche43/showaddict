@@ -58,7 +58,8 @@ public class NextEpisodeDbAdapter extends AbstractDbAdapter {
 		    db.insert(TABLE_NAME, null,
 		    		values);
 		} else {
-			if(nextEpisode.getTitle() != cursor.getString(3)) {
+			NextEpisode nextEpisodeDb = buildNextEpisodeAllColumns(cursor);
+			if(!nextEpisode.equals(nextEpisodeDb)) {
 				updateNextEpisode(values, cursor.getInt(0));
 			} 
 		}
@@ -77,8 +78,26 @@ public class NextEpisodeDbAdapter extends AbstractDbAdapter {
 		Cursor cursor = db.query(TABLE_NAME, allColumns, whereSelection, new String[] {"" + showId}, null, null,
 				null);
 
-		cursor.moveToFirst();
+		NextEpisode nextEpisode = null;
+		if(cursor.moveToFirst()){
+			nextEpisode = buildNextEpisodeAllColumns(cursor);
+		}
 		
+			
+		cursor.close();
+		close();
+		return nextEpisode;
+	}
+
+	/**
+	 * method to build a new next episode object from db
+	 * 
+	 * requires all columns
+	 * 
+	 * @param cursor
+	 * @return
+	 */
+	private NextEpisode buildNextEpisodeAllColumns(Cursor cursor) {
 		NextEpisode nextEpisode = new NextEpisode();
 		nextEpisode.setId(cursor.getInt(0));
 		nextEpisode.setSeason(cursor.getInt(1));
@@ -86,9 +105,6 @@ public class NextEpisodeDbAdapter extends AbstractDbAdapter {
 		nextEpisode.setTitle(cursor.getString(3));
 		nextEpisode.setFirst_aired(cursor.getInt(4));
 		nextEpisode.setImages(nextEpisode.new Images(cursor.getString(5)));
-			
-		cursor.close();
-		close();
 		return nextEpisode;
 	}
 

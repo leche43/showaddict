@@ -9,7 +9,7 @@ public class Show {
 	private ShowInfo show;
 	private Progress progress;
 	private List<Season> seasons;
-//	private NextEpisode next_episode;
+	private NextEpisode next_episode;
 	
 	public Integer getId() {
 		return id;
@@ -41,11 +41,11 @@ public class Show {
 	public void setSeasons(List<Season> seasons) {
 		this.seasons = seasons;
 	}
-//	public NextEpisode getNextEpisode() {
-//		return next_episode;
-//	}
-//	public void setNextEpisode(NextEpisode nextEpisode) {
-//		this.next_episode = nextEpisode;
-//	}
+	public NextEpisode getNextEpisode() {
+		return next_episode;
+	}
+	public void setNextEpisode(NextEpisode nextEpisode) {
+		this.next_episode = nextEpisode;
+	}
 
 }

@@ -65,16 +65,60 @@ public class NextEpisode {
 	public void setImages(Images images) {
 		this.images = images;
 	}
-
 	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (first_aired ^ (first_aired >>> 32));
+		result = prime * result + ((num == null) ? 0 : num.hashCode());
+		result = prime * result + ((season == null) ? 0 : season.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		NextEpisode other = (NextEpisode) obj;
+		if (first_aired != other.first_aired)
+			return false;
+		if (num == null) {
+			if (other.num != null)
+				return false;
+		} else if (!num.equals(other.num))
+			return false;
+		if (season == null) {
+			if (other.season != null)
+				return false;
+		} else if (!season.equals(other.season))
+			return false;
+		if (title == null) {
+			if (other.title != null)
+				return false;
+		} else if (!title.equals(other.title))
+			return false;
+		return true;
+	}
+
+
 	/**
-	 * Klasse images wird bisher nur hier verwendet
+	 * Klasse images wird bisher nur hier verwendet.
 	 * 
-	 * kann aber auch herausgezogen werden, falls sie woanders verwendet wird
+	 * Kann aber auch herausgezogen werden, falls sie woanders verwendet wird.
+	 * 
+	 * Nur zum Parsen so gebaut.
 	 * 
 	 * @author Nico
 	 *
 	 */
+	//TODO ander loesen
 	public class Images {
 		private String screen;
 
@@ -90,5 +134,7 @@ public class NextEpisode {
 			this.screen = screen;
 		}
 	}
+
+
 
 }

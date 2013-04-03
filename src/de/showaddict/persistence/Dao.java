@@ -39,7 +39,9 @@ public class Dao {
 			show.setTitle(show.getShowInfo().getTitle());
 			long showId = createShow(show);
 			createProgress(show.getProgress(), showId);
-//			createNextEpisode(show.getNextEpisode(), showId);
+			if(show.getNextEpisode() != null) {
+				createNextEpisode(show.getNextEpisode(), showId);
+			}
 			createShowInfo(show.getShowInfo(), showId);
 			for(Season season : show.getSeasons()) {
 				long seasonId = createSeason(season, showId);
@@ -62,8 +64,8 @@ public class Dao {
 			Progress progress = getProgressForShow(show.getId());
 			show.setProgress(progress);
 			
-//			NextEpisode nextEpisode = getNextEpisodeForShow(show.getId());
-//			show.setNextEpisode(nextEpisode);
+			NextEpisode nextEpisode = getNextEpisodeForShow(show.getId());
+			show.setNextEpisode(nextEpisode);
 			
 			ShowInfo showInfo = getShowInfoForShow(show.getId());
 			show.setShowInfo(showInfo);
@@ -84,6 +86,13 @@ public class Dao {
 		showDbAdapter.open();
 		List<MockShow> mockShows = showDbAdapter.getAllMockShows();
 		showDbAdapter.close();
+		for(MockShow mockShow : mockShows) {
+			NextEpisodeDbAdapter nextEpisodeDbAdapter = new NextEpisodeDbAdapter(context);
+			nextEpisodeDbAdapter.open();
+			NextEpisode nextEpisode = nextEpisodeDbAdapter.getNextEpisodeFromShow(mockShow.getShowId());
+			mockShow.setNextEpisode(nextEpisode);
+			nextEpisodeDbAdapter.close();
+		}
 		
 		return mockShows;
 	}

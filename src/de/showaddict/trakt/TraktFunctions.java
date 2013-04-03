@@ -32,6 +32,8 @@ public class TraktFunctions {
 	public static final String LIBRARY_URL = "http://api.trakt.tv/user/library/shows/all.json/";
 	public static final String USER_PROGRESS_WATCHED_URL = "http://api.trakt.tv/user/progress/watched.json/";
 	
+	public static final String NO_NEXT_EPISODE = "\"next_episode\":false,";
+	
 	public static List<ShowInfo> getAllShowsFromLibrary() {
 		List<ShowInfo> list = new ArrayList<ShowInfo>();
 
@@ -55,23 +57,26 @@ public class TraktFunctions {
 		
 		String json = doRequest(url);
 		
-		list = parseJson(json);
+		list = parseAllWatchedShowsJson(json);
 		
 		
 		return list;
 	}
 	
 	/**
-	 * diese Methode ist speziell für den rest aufruf progress
-	 * sollte vor verwendung genau verstanden sein
+	 * Diese Methode ist speziell für den Rest Aufruf siehe link.
 	 * 
+	 * Sollte vor verwendung genau verstanden sein
+	 * @see <a href="http://trakt.tv/api-docs/user-progress-watched">http://trakt.tv/api-docs/user-progress-watched</a>
 	 * @param json
 	 * @return liste von shows
 	 */
-	private static List<Show> parseJson(String json) {
+	private static List<Show> parseAllWatchedShowsJson(String json) {
 		
 		Gson gson = new Gson();
 		Type listType = new TypeToken<List<Show>>(){}.getType();
+		
+		json = checkIfNextEpisodeFalse(json);
 		
 		List<Show> showList = gson.fromJson(json, listType);
 		
@@ -107,6 +112,15 @@ public class TraktFunctions {
 		return showList;
 	}
 	
+	private static String checkIfNextEpisodeFalse(String json) {
+		String newJson = "";
+		if(json.contains(NO_NEXT_EPISODE)) {
+			newJson = json.replaceAll(NO_NEXT_EPISODE, " ");
+		}
+		
+		return newJson;
+	}
+
 	/**
 	 * request on the given url
 	 * 
