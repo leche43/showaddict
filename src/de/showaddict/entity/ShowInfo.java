@@ -25,6 +25,10 @@ public class ShowInfo {
 	public void setId(int id) {
 		this.id = id;
 	}
+	/**
+	 * Don't use this method. It is only for parsing. Use {@link Show#getTitle() Show.getTitle()} instead.
+	 * @return
+	 */
 	public String getTitle() {
 		return title;
 	}

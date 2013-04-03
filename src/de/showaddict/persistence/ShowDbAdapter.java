@@ -61,7 +61,7 @@ public class ShowDbAdapter extends AbstractDbAdapter {
 		
 		Show show = new Show();
 		show.setId(cursor.getInt(0));
-		show.setTitle(cursor.getString(0));
+		show.setTitle(cursor.getString(1));
 
 			
 		cursor.close();

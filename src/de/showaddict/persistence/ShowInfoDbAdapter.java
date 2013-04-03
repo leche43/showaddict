@@ -14,20 +14,19 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 	public static final String COLUMN_TVDB_ID = "tvdb_id";
 	public static final String COLUMN_IMBD_ID = "imdb_id";
 	public static final String COLUMN_TVRAGE_ID = "tvrage_id";
-	public static final String COLUMN_TITLE = "title";
 	public static final String COLUMN_URL = "url";
 	public static final String COLUMN_PLAYS = "plays";
 	public static final String COLUMN_SHOW_FK = "show_fk";
 	
 	private String[] allColumns = { COLUMN_ID, COLUMN_IMBD_ID, COLUMN_PLAYS,
-									COLUMN_TITLE, COLUMN_TVDB_ID, COLUMN_TVRAGE_ID,
+									COLUMN_TVDB_ID, COLUMN_TVRAGE_ID,
 									COLUMN_URL};
 	
 	public static final String SHOW_INFO_TABLE_CREATE = "CREATE TABLE "
 			+ TABLE_NAME + "(" + COLUMN_ID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_TVDB_ID
 			+ " TEXT, " + COLUMN_IMBD_ID + " INTEGER, " + COLUMN_TVRAGE_ID
-			+ " INTEGER, " + COLUMN_TITLE + " TEXT," + COLUMN_URL + " TEXT, "
+			+ " INTEGER, " + COLUMN_URL + " TEXT, "
 			+ COLUMN_PLAYS + " INTEGER," 
 			+ COLUMN_SHOW_FK + " INTEGER, "
 			+ "FOREIGN KEY(" + COLUMN_SHOW_FK + ") REFERENCES " + ShowDbAdapter.TABLE_NAME + "(" + ShowDbAdapter.COLUMN_ID + ")"
@@ -45,7 +44,6 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 	    values.put(COLUMN_TVDB_ID, showInfo.getTvdb_id());
 	    values.put(COLUMN_IMBD_ID, showInfo.getImdb_id());
 	    values.put(COLUMN_TVRAGE_ID, showInfo.getTvrage_id());
-	    values.put(COLUMN_TITLE, showInfo.getTitle());
 	    values.put(COLUMN_URL, showInfo.getUrl());
 	    values.put(COLUMN_PLAYS, showInfo.getPlays());
 	    values.put(COLUMN_SHOW_FK, showId);
@@ -106,7 +104,6 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 		showInfo.setId(cursor.getInt(0));
 		showInfo.setImdb_id(cursor.getString(1));
 		showInfo.setPlays(cursor.getInt(2));
-		showInfo.setTitle(cursor.getString(3));
 		showInfo.setTvdb_id(cursor.getInt(4));
 		showInfo.setTvrage_id(cursor.getInt(5));
 		showInfo.setUrl(cursor.getString(6));
