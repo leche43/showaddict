@@ -9,19 +9,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.showaddict.R;
+import de.showaddict.entity.MockShow;
 import de.showaddict.entity.Show;
-import de.showaddict.entity.ShowInfo;
 
-public class ShowListAdapter extends ArrayAdapter<Show> {
+public class ShowListAdapter extends ArrayAdapter<MockShow> {
 	
 	private Context context;
 	
-	private List<Show> shows;
+	private List<MockShow> mockShows;
 	
-	public ShowListAdapter(Context context, List<Show> shows) {
-		super(context, R.layout.show_row, shows);
+	public ShowListAdapter(Context context, List<MockShow> mockShows) {
+		super(context, R.layout.show_row, mockShows);
 		this.context = context;
-		this.shows = shows;
+		this.mockShows = mockShows;
 	}
 	
 	static class ViewHolder {
@@ -45,7 +45,7 @@ public class ShowListAdapter extends ArrayAdapter<Show> {
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		holder.titleView.setText(shows.get(position).getShowInfo().getTitle());
+		holder.titleView.setText(mockShows.get(position).getTitle());
 		
 		return convertView;
 	}

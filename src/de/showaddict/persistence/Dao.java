@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import android.content.Context;
 import de.showaddict.entity.Episode;
+import de.showaddict.entity.MockShow;
 import de.showaddict.entity.NextEpisode;
 import de.showaddict.entity.Progress;
 import de.showaddict.entity.Season;
@@ -76,6 +77,15 @@ public class Dao {
 		}
 		LOGGER.info("FINISHED GET ALL SHOWS");
 		return shows;
+	}
+	
+	public List<MockShow> getAllMockShows() {
+		ShowDbAdapter showDbAdapter = new ShowDbAdapter(context);
+		showDbAdapter.open();
+		List<MockShow> mockShows = showDbAdapter.getAllMockShows();
+		showDbAdapter.close();
+		
+		return mockShows;
 	}
 	
 	private List<Episode> getEpisodesForSeason(Integer seasonId) {

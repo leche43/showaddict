@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import de.showaddict.entity.MockShow;
 import de.showaddict.entity.Show;
 
 public class ShowDbAdapter extends AbstractDbAdapter {
@@ -68,7 +69,7 @@ public class ShowDbAdapter extends AbstractDbAdapter {
 		while (!cursor.isAfterLast()) {
 			Show show = new Show();
 			show.setId(cursor.getInt(0));
-
+			show.setTitle(cursor.getString(1));
 
 			shows.add(show);
 			cursor.moveToNext();
@@ -77,6 +78,25 @@ public class ShowDbAdapter extends AbstractDbAdapter {
 		close();
 		
 		return shows;
+	}
+
+	public List<MockShow> getAllMockShows() {
+		List<MockShow> mockShows = new ArrayList<MockShow>();
+		Cursor cursor = db.query(TABLE_NAME, new String[]{COLUMN_TITLE}, null, null, null, null,
+				null);
+		
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast()) {
+			MockShow mockShow = new MockShow();
+			mockShow.setTitle(cursor.getString(0));
+
+
+			mockShows.add(mockShow);
+			cursor.moveToNext();
+		}
+		cursor.close();
+		close();
+		return mockShows;
 	}
 	
 }
