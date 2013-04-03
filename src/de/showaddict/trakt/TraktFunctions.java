@@ -1,6 +1,5 @@
 package de.showaddict.trakt;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,6 +19,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -207,10 +207,11 @@ public class TraktFunctions {
 			
 			Bitmap image = BitmapFactory.decodeStream(is);
 			LOGGER.info("BITMAP BYTES; " + image.getByteCount());
+			image = getResizedBitmap(image, 300, 204);
 			
 			
 			FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-			image.compress(CompressFormat.JPEG, 30, fos);
+			image.compress(CompressFormat.JPEG, 100, fos);
 			LOGGER.info("STORED IMAGE: " + fileName + " BYTES: " + image.getByteCount());
 			fos.close();
 			
@@ -224,6 +225,40 @@ public class TraktFunctions {
 		
 		show.setBannerUri(fileName);
 		return show;
+	}
+	
+	/**
+	 * TODO check: android.graphics.Bitmap.createScaledBitmap with filter=true
+	 * 
+	 * @param bm
+	 * @param newHeight
+	 * @param newWidth
+	 * @return
+	 */
+	public static Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+		 
+		int width = bm.getWidth();
+		 
+		int height = bm.getHeight();
+		 
+		float scaleWidth = ((float) newWidth) / width;
+		 
+		float scaleHeight = ((float) newHeight) / height;
+		 
+		// CREATE A MATRIX FOR THE MANIPULATION
+		 
+		Matrix matrix = new Matrix();
+		 
+		// RESIZE THE BIT MAP
+		 
+		matrix.postScale(scaleWidth, scaleHeight);
+		 
+		// RECREATE THE NEW BITMAP
+		 
+		Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+		 
+		return resizedBitmap;
+		 
 	}
 	
 	public static String convertStreamToString(InputStream is) {
