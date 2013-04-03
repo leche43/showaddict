@@ -1,6 +1,5 @@
 package de.showaddict.adapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -11,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.showaddict.R;
 import de.showaddict.entity.Show;
+import de.showaddict.entity.ShowInfo;
 
 public class ShowListAdapter extends ArrayAdapter<Show> {
 	
@@ -24,18 +24,30 @@ public class ShowListAdapter extends ArrayAdapter<Show> {
 		this.shows = shows;
 	}
 	
+	static class ViewHolder {
+		TextView titleView;
+	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) context
-		        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View rowView = inflater.inflate(R.layout.show_row, null);
+		ViewHolder holder;
+	
+		if(convertView == null) {
+			LayoutInflater inflater = (LayoutInflater) context
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = inflater.inflate(R.layout.show_row, null);
+			holder = new ViewHolder();
+			//get row elements
+			holder.titleView = (TextView) convertView.findViewById(R.id.show_title);
+			
+			convertView.setTag(holder);
+		} else {
+			holder = (ViewHolder) convertView.getTag();
+		}
 		
-		//get row elements
-		TextView titleView = (TextView) rowView.findViewById(R.id.show_title);
+		holder.titleView.setText(shows.get(position).getShowInfo().getTitle());
 		
-		titleView.setText(shows.get(position).getTitle());
-		
-		return rowView;
+		return convertView;
 	}
 
 }

@@ -12,14 +12,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import de.showaddict.R;
 import de.showaddict.entity.Show;
+import de.showaddict.entity.ShowInfo;
 import de.showaddict.fragments.LoginFragment;
 import de.showaddict.fragments.MovieListFragment;
 import de.showaddict.fragments.ShowListFragment;
-import de.showaddict.persistence.ShowDatabaseHelper;
+import de.showaddict.persistence.Dao;
 import de.showaddict.trakt.TraktFunctions;
 
 public class ListActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
@@ -59,6 +58,11 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
         isLoggedIn = false;
     }
     
+    /**
+     * wird in fragment_login durch login aufgerufen
+     * 
+     * @param view
+     */
     public void downloadShows(View view) {
     	TraktFunctionsService tfs = new TraktFunctionsService(getApplicationContext());
     	tfs.execute();
@@ -125,12 +129,11 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
 
     	@Override
     	protected List<Show> doInBackground(Object... arg0) {
-    		shows = TraktFunctions.getAllShowsFromLibrary();
-    		ShowDatabaseHelper sdbHelper = new ShowDatabaseHelper(context);
+//    		shows = TraktFunctions.getAllShowsFromLibrary();
+    		shows = TraktFunctions.getAllWatchedShowsFromLibrary();
     		
-    		for(Show show : shows) {
-    			sdbHelper.createShow(show);
-    		}
+    		Dao dao = new Dao(context);
+    		dao.createShows(shows);
     		return shows;
     	}
     	

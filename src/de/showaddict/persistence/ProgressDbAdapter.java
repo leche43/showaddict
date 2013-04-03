@@ -1,0 +1,69 @@
+package de.showaddict.persistence;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import de.showaddict.entity.Progress;
+
+public class ProgressDbAdapter extends AbstractDbAdapter {
+	
+	public static final String TABLE_NAME = "t_progress";
+	
+	public static final String COLUMN_ID = "_id";
+	public static final String COLUMN_PERCENTAGE = "perc";
+	public static final String COLUMN_AIRED = "aired";
+	public static final String COLUMN_COMPLETED = "completed";
+	public static final String COLUMN_LEFT = "left";
+	public static final String COLUMN_SHOW_FK = "show_fk";
+	
+	private String[] allColumns = {
+			COLUMN_ID, COLUMN_PERCENTAGE, COLUMN_AIRED, COLUMN_COMPLETED, COLUMN_LEFT
+	};
+	
+	public static final String PROGRESS_TABLE_CREATE = "CREATE TABLE "
+			+ TABLE_NAME + "(" + COLUMN_ID
+			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + COLUMN_PERCENTAGE
+			+ " INTEGER, " + COLUMN_AIRED + " INTEGER, " + COLUMN_COMPLETED
+			+ " INTEGER, " + COLUMN_LEFT + " INTEGER, " 
+			+ COLUMN_SHOW_FK + " INTEGER, "
+			+ "FOREIGN KEY(" + COLUMN_SHOW_FK + ") REFERENCES " + ShowDbAdapter.TABLE_NAME + "(" + ShowDbAdapter.COLUMN_ID + ")"
+			+")" + ";";
+	
+
+	public ProgressDbAdapter(Context context) {
+		super(context);
+	}
+	
+	public long createProgress(Progress progress, long showId) {
+		ContentValues values = new ContentValues();
+	    values.put(COLUMN_PERCENTAGE, progress.getPercentage());
+	    values.put(COLUMN_AIRED, progress.getAired());
+	    values.put(COLUMN_COMPLETED, progress.getCompleted());
+	    values.put(COLUMN_LEFT, progress.getLeft());
+	    values.put(COLUMN_SHOW_FK, showId);
+	    
+	    long insertId = db.insert(TABLE_NAME, null,
+	        values);
+	    
+	    return insertId;
+	}
+	
+	public Progress getProgressFromShow(long showId) {
+		String whereSelection = "show_fk = ?";
+		Cursor cursor = db.query(TABLE_NAME, allColumns, whereSelection, new String[] {"" + showId}, null, null,
+				null);
+
+		cursor.moveToFirst();
+		
+		Progress progress = new Progress();
+		progress.setId(cursor.getInt(0));
+		progress.setPercentage(cursor.getInt(1));
+		progress.setAired(cursor.getInt(2));
+		progress.setCompleted(cursor.getInt(3));
+		progress.setLeft(cursor.getInt(4));
+			
+		cursor.close();
+		close();
+		return progress;
+	}
+}

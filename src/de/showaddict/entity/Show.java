@@ -1,28 +1,20 @@
 package de.showaddict.entity;
 
+import java.util.List;
+
 public class Show {
-	private int id;
+	
+	private Integer id;
 	private String title;
-    private int year;
-    private String imdb_id;
-    private int tvdb_id;
-    private int tvrage_id;
-    private int plays;
-    private String url;
-//    "images": {
-//        "poster": "http://trakt.us/images/posters/735.8.jpg",
-//        "fanart": "http://trakt.us/images/fanart/735.8.jpg",
-//        "banner": "http://trakt.us/images/banners/735.8.jpg"
-//    },
-//    "genres": ["Animation", "Comedy"]
-    public Show() {
-    	
-    }
-    
-    public int getId() {
+	private ShowInfo show;
+	private Progress progress;
+	private List<Season> seasons;
+//	private NextEpisode next_episode;
+	
+	public Integer getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 	public String getTitle() {
@@ -31,45 +23,29 @@ public class Show {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public int getYear() {
-		return year;
+	public ShowInfo getShowInfo() {
+		return show;
 	}
-	public void setYear(int year) {
-		this.year = year;
+	public void setShowInfo(ShowInfo showInfo) {
+		this.show = showInfo;
 	}
-	public String getImdb_id() {
-		return imdb_id;
+	public Progress getProgress() {
+		return progress;
 	}
-	public void setImdb_id(String imdb_id) {
-		this.imdb_id = imdb_id;
+	public void setProgress(Progress progress) {
+		this.progress = progress;
 	}
-	public int getTvdb_id() {
-		return tvdb_id;
+	public List<Season> getSeasons() {
+		return seasons;
 	}
-	public void setTvdb_id(int tvdb_id) {
-		this.tvdb_id = tvdb_id;
+	public void setSeasons(List<Season> seasons) {
+		this.seasons = seasons;
 	}
-	public int getTvrage_id() {
-		return tvrage_id;
-	}
-	public void setTvrage_id(int tvrage_id) {
-		this.tvrage_id = tvrage_id;
-	}
-	public int getPlays() {
-		return plays;
-	}
-	public void setPlays(int plays) {
-		this.plays = plays;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
+//	public NextEpisode getNextEpisode() {
+//		return next_episode;
+//	}
+//	public void setNextEpisode(NextEpisode nextEpisode) {
+//		this.next_episode = nextEpisode;
+//	}
 
-	@Override
-	public String toString() {
-		return title;
-	}
 }
