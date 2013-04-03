@@ -75,6 +75,7 @@ public class TraktFunctions {
 			for(ShowInfo showInfo : showInfos) {
 				if(show.getShowInfo().getTitle().equals(showInfo.getTitle())) {
 					show.setShowInfo(showInfo);
+					//TODO sollte nur einmal aufgerufen werden oder falls es eine neue URL gibt
 					show = downloadPicture(show, context);
 					continue;
 				}
