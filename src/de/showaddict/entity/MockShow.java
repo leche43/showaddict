@@ -14,6 +14,7 @@ public class MockShow {
 	
 	private Integer showId;
 	private String title;
+	private String bannerUri;
 	private NextEpisode nextEpisode;
 	
 	public Integer getShowId() {
@@ -27,6 +28,12 @@ public class MockShow {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getBannerUri() {
+		return bannerUri;
+	}
+	public void setBannerUri(String bannerUri) {
+		this.bannerUri = bannerUri;
 	}
 	public NextEpisode getNextEpisode() {
 		return nextEpisode;

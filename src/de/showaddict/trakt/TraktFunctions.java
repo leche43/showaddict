@@ -1,17 +1,25 @@
 package de.showaddict.trakt;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -26,6 +34,8 @@ import de.showaddict.entity.Show;
 import de.showaddict.entity.ShowInfo;
 
 public class TraktFunctions {
+	
+	public static Logger LOGGER = Logger.getLogger(TraktFunctions.class.getName());
 	
 	public static final String API_KEY = "4bde279d0fe5826ab48e2f0f91117474";
 	public static final String USERNAME = "JaxxTe";
@@ -51,18 +61,21 @@ public class TraktFunctions {
 	 * 
 	 * @return
 	 */
-	public static List<Show> getAllWatchedShowsFromLibrary() {
+	public static List<Show> getAllWatchedShowsFromLibrary(Context context) {
 		List<Show> shows = new ArrayList<Show>();
 		String url = USER_PROGRESS_WATCHED_URL + API_KEY + "/"+ USERNAME;
 		
 		String json = doRequest(url);
 		
 		shows = parseAllWatchedShowsJson(json);
+		//hole mehr Informationen ueber eine show
 		List<ShowInfo> showInfos = getAllShowsDetails();
+		//informationen zu einer show hinzufuegen und bild herunterladen
 		for(Show show : shows) {
 			for(ShowInfo showInfo : showInfos) {
 				if(show.getShowInfo().getTitle().equals(showInfo.getTitle())) {
 					show.setShowInfo(showInfo);
+					show = downloadPicture(show, context);
 					continue;
 				}
 				
@@ -181,7 +194,38 @@ public class TraktFunctions {
 		return list;		
 	}
 	
-	public static String convertStreamToString(java.io.InputStream is) {
+	private static Show downloadPicture(Show show, Context context) {
+		HttpClient client = new DefaultHttpClient();
+		HttpGet request = new HttpGet(show.getShowInfo().getImages().getPoster());
+		HttpResponse response;
+		String fileName = show.getShowInfo().getTitle() + "_banner.jpg";
+
+		try {
+			response = client.execute(request);
+			InputStream is = response.getEntity().getContent();
+			
+			Bitmap image = BitmapFactory.decodeStream(is);
+			LOGGER.info("BITMAP BYTES; " + image.getByteCount());
+			
+			
+			FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+			image.compress(CompressFormat.JPEG, 30, fos);
+			LOGGER.info("STORED IMAGE: " + fileName + " BYTES: " + image.getByteCount());
+			fos.close();
+			
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		show.setBannerUri(fileName);
+		return show;
+	}
+	
+	public static String convertStreamToString(InputStream is) {
 	    java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
 	    return s.hasNext() ? s.next() : "";
 	}

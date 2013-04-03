@@ -15,7 +15,6 @@
             android:id="@+id/show_image"
             android:layout_width="match_parent"
         	android:layout_height="match_parent"
-            android:src="@drawable/example"
             android:contentDescription="@string/show_image_description"/>
     </LinearLayout>
     <RelativeLayout

@@ -6,6 +6,7 @@ public class Show {
 	
 	private Integer id;
 	private String title;
+	private String bannerUri;
 	private ShowInfo show;
 	private Progress progress;
 	private List<Season> seasons;
@@ -22,6 +23,12 @@ public class Show {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getBannerUri() {
+		return bannerUri;
+	}
+	public void setBannerUri(String bannerUri) {
+		this.bannerUri = bannerUri;
 	}
 	public ShowInfo getShowInfo() {
 		return show;

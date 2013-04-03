@@ -134,7 +134,7 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
     	protected List<Show> doInBackground(Object... arg0) {
 //    		shows = TraktFunctions.getAllShowsFromLibrary();
     		LOGGER.info("STARTED DOWNLOADING SHOWS");
-    		shows = TraktFunctions.getAllWatchedShowsFromLibrary();
+    		shows = TraktFunctions.getAllWatchedShowsFromLibrary(context);
     		LOGGER.info("FINISHED DOWNLOADING SHOWS");
     		Dao dao = new Dao(context);
     		dao.createShows(shows);

@@ -16,12 +16,15 @@ public class ShowDbAdapter extends AbstractDbAdapter {
 	
 	public static final String COLUMN_ID = "_id";
 	public static final String COLUMN_TITLE = "title";
+
+	public static final String COLUMN_BANNER_URI = "banner_uri";
 	
 
 	public static final String SHOW_TABLE_CREATE = "CREATE TABLE "
 			+ TABLE_NAME + "(" + COLUMN_ID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, "
-			+ COLUMN_TITLE + " TEXT "
+			+ COLUMN_TITLE + " TEXT, "
+			+ COLUMN_BANNER_URI + " TEXT "
 			+");";
 	
 	private String[] allColumns = {
@@ -35,6 +38,7 @@ public class ShowDbAdapter extends AbstractDbAdapter {
 	public long createShow(Show show) {
 		ContentValues values = new ContentValues();
 	    values.put(COLUMN_TITLE, show.getTitle());
+	    values.put(COLUMN_BANNER_URI, show.getBannerUri());
 	    
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		queryBuilder.setTables(TABLE_NAME);
@@ -79,6 +83,7 @@ public class ShowDbAdapter extends AbstractDbAdapter {
 			Show show = new Show();
 			show.setId(cursor.getInt(0));
 			show.setTitle(cursor.getString(1));
+			show.setBannerUri(cursor.getString(2));
 
 			shows.add(show);
 			cursor.moveToNext();
@@ -99,6 +104,7 @@ public class ShowDbAdapter extends AbstractDbAdapter {
 			MockShow mockShow = new MockShow();
 			mockShow.setShowId(cursor.getInt(0));
 			mockShow.setTitle(cursor.getString(1));
+			mockShow.setBannerUri(cursor.getString(2));
 
 
 			mockShows.add(mockShow);
