@@ -62,11 +62,10 @@ public class ShowListAdapter extends ArrayAdapter<MockShow> {
 			holder.nextEpisodeTitleView.setText(mockShows.get(position).getNextEpisode().getTitle());
 			holder.nextEpisodeString.setText(R.string.show_row_nextEpisode);
 			//TODO check locale
-			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
-			String date = sdf.format(new Date(mockShows.get(position).getNextEpisode().getFirst_aired()));
+			SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+			String date = sdf.format(new Date(mockShows.get(position).getNextEpisode().getFirst_aired() * 1000));
 			holder.nextEpisodeDate.setText(date);
 		} else {
-			//TODO in string values schreiben
 			holder.nextEpisodeNumberView.setText(R.string.no_more_episode);
 			holder.nextEpisodeTitleView.setText("");
 			holder.nextEpisodeString.setText("");
