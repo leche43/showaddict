@@ -3,6 +3,7 @@ package de.showaddict.persistence;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import de.showaddict.entity.ShowInfo;
 
 public class ShowInfoDbAdapter extends AbstractDbAdapter {
@@ -38,7 +39,7 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 	}
 	
 	
-	public long createShowInfo(ShowInfo showInfo, long showId) {
+	public void createShowInfo(ShowInfo showInfo, long showId) {
 		ContentValues values = new ContentValues();
 		
 	    values.put(COLUMN_TVDB_ID, showInfo.getTvdb_id());
@@ -49,31 +50,24 @@ public class ShowInfoDbAdapter extends AbstractDbAdapter {
 	    values.put(COLUMN_PLAYS, showInfo.getPlays());
 	    values.put(COLUMN_SHOW_FK, showId);
 	    
-	    long insertId = db.insert(TABLE_NAME, null,
-	        values);
-	    
-	    return insertId;
-	}
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		queryBuilder.setTables(TABLE_NAME);
+		Cursor cursor = queryBuilder.query(db, null , COLUMN_SHOW_FK + " = ?", 
+				new String[] {"" + showId}, null, null, null);
 		
-//	public Long createShowInfo(ShowInfo show) {
-//		Long id;
-//		ContentValues values = new ContentValues();
-//		values.put(COLUMN_TVDB_ID, show.getTvdb_id());
-//		values.put(COLUMN_TITLE, show.getTitle());
-//		
-//		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-//		queryBuilder.setTables(TABLE_NAME);
-//		Cursor cursor = queryBuilder.query(db, null , "tvdb_id = ?", new String[] {""+show.getTvdb_id()}, null, null, null);
-//		
-//		if(! (cursor.moveToFirst()) || cursor.getCount() == 0) {
-//			id = db.insert(TABLE_NAME, null, values);
-//		} else {
-//			id = cursor.getLong(0);
-//		}
-//		cursor.close();
-//		close();
-//		return id;
-//	}
+		if(! (cursor.moveToFirst()) || cursor.getCount() == 0) {
+		    db.insert(TABLE_NAME, null,
+		    		values);
+		} else {
+			updateShowInfo(values, cursor.getInt(0));
+		}
+	}
+	private void updateShowInfo(ContentValues values, long showInfoId) {
+		LOGGER.info("STARTED UPDATE SHOW INFO: " + showInfoId);
+		String whereClause = COLUMN_ID + " = ?";
+		db.update(TABLE_NAME, values, whereClause, new String[] {"" + showInfoId});
+		LOGGER.info("FINISHED UPDATE SHOW INFO: " + showInfoId);
+	}
 	
 	/**
 	 * Find all show infos in the database

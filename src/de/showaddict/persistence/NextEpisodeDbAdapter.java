@@ -3,6 +3,7 @@ package de.showaddict.persistence;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import de.showaddict.entity.NextEpisode;
 
 public class NextEpisodeDbAdapter extends AbstractDbAdapter {
@@ -39,7 +40,7 @@ public class NextEpisodeDbAdapter extends AbstractDbAdapter {
 		super(context);
 	}
 	
-	public long createNextEpisode(NextEpisode nextEpisode, long showId) {
+	public void createNextEpisode(NextEpisode nextEpisode, long showId) {
 		ContentValues values = new ContentValues();
 	    values.put(COLUMN_SEASON, nextEpisode.getSeason());
 	    values.put(COLUMN_NUM, nextEpisode.getNum());
@@ -48,12 +49,29 @@ public class NextEpisodeDbAdapter extends AbstractDbAdapter {
 	    values.put(COLUMN_IMAGE_URL, nextEpisode.getImages().getScreen());
 	    values.put(COLUMN_SHOW_FK, showId);
 	    
-	    long insertId = db.insert(TABLE_NAME, null,
-	        values);
-	    
-	    return insertId;
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		queryBuilder.setTables(TABLE_NAME);
+		Cursor cursor = queryBuilder.query(db, null , COLUMN_SHOW_FK + " = ?", 
+				new String[] {"" + showId}, null, null, null);
+		
+		if(! (cursor.moveToFirst()) || cursor.getCount() == 0) {
+		    db.insert(TABLE_NAME, null,
+		    		values);
+		} else {
+			if(nextEpisode.getTitle() != cursor.getString(3)) {
+				updateNextEpisode(values, cursor.getInt(0));
+			} 
+		}
+		cursor.close();
 	}
 	
+	private void updateNextEpisode(ContentValues values, long nextEpisodeId) {
+		LOGGER.info("STARTED UPDATE NEXT EPISODE: " + nextEpisodeId);
+		String whereClause = COLUMN_ID + " = ?";
+		db.update(TABLE_NAME, values, whereClause, new String[] { "" + nextEpisodeId});
+		LOGGER.info("FINISHED UPDATE NEXT EPISODE: " + nextEpisodeId);
+	}
+
 	public NextEpisode getNextEpisodeFromShow(long showId) {
 		String whereSelection = "show_fk = ?";
 		Cursor cursor = db.query(TABLE_NAME, allColumns, whereSelection, new String[] {"" + showId}, null, null,

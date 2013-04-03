@@ -3,6 +3,7 @@ package de.showaddict.persistence;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import de.showaddict.entity.Progress;
 
 public class ProgressDbAdapter extends AbstractDbAdapter {
@@ -34,7 +35,7 @@ public class ProgressDbAdapter extends AbstractDbAdapter {
 		super(context);
 	}
 	
-	public long createProgress(Progress progress, long showId) {
+	public void createProgress(Progress progress, long showId) {
 		ContentValues values = new ContentValues();
 	    values.put(COLUMN_PERCENTAGE, progress.getPercentage());
 	    values.put(COLUMN_AIRED, progress.getAired());
@@ -42,12 +43,28 @@ public class ProgressDbAdapter extends AbstractDbAdapter {
 	    values.put(COLUMN_LEFT, progress.getLeft());
 	    values.put(COLUMN_SHOW_FK, showId);
 	    
-	    long insertId = db.insert(TABLE_NAME, null,
-	        values);
-	    
-	    return insertId;
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		queryBuilder.setTables(TABLE_NAME);
+		Cursor cursor = queryBuilder.query(db, null , COLUMN_SHOW_FK + " = ?", 
+				new String[] {"" + showId}, null, null, null);
+		
+		if(! (cursor.moveToFirst()) || cursor.getCount() == 0) {
+		    db.insert(TABLE_NAME, null,
+		    		values);
+		} else {
+			if(progress.getPercentage() != cursor.getInt(1)) {
+				updateProgress(values, cursor.getInt(0));
+			} 
+		}
 	}
 	
+	private void updateProgress(ContentValues values, int progressId) {
+		LOGGER.info("STARTED UPDATE PROGRESS: " + progressId);
+		String whereClause = COLUMN_ID + " = ?";
+		db.update(TABLE_NAME, values, whereClause, new String[] {"" + progressId});
+		LOGGER.info("FINISHED UPDATE PROGRESS: " + progressId);
+	}
+
 	public Progress getProgressFromShow(long showId) {
 		String whereSelection = "show_fk = ?";
 		Cursor cursor = db.query(TABLE_NAME, allColumns, whereSelection, new String[] {"" + showId}, null, null,

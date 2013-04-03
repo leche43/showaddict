@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import de.showaddict.entity.Season;
 
 public class SeasonDbAdapter extends AbstractDbAdapter {
@@ -50,10 +51,30 @@ public class SeasonDbAdapter extends AbstractDbAdapter {
 	    values.put(COLUMN_LEFT, season.getLeft());
 	    values.put(COLUMN_SHOW_FK, showId);
 	    
-	    long insertId = db.insert(TABLE_NAME, null,
-	        values);
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		queryBuilder.setTables(TABLE_NAME);
+		Cursor cursor = queryBuilder.query(db, null , COLUMN_SHOW_FK + " = ? AND " + COLUMN_SEASON + " = ?", 
+				new String[] {"" + showId, season.getSeason().toString()}, null, null, null);
+		
+		long id;
+		if(! (cursor.moveToFirst()) || cursor.getCount() == 0) {
+		    id = db.insert(TABLE_NAME, null,
+		    		values);
+		} else {
+			updateSeason(values, cursor.getInt(0));
+			id = cursor.getInt(0);
+		}
 	    
-	    return insertId;
+	    return id;
+	}
+	
+
+
+	private void updateSeason(ContentValues values, int seasonId) {
+		LOGGER.info("STARTED UPDATE SEASON: " + seasonId);
+		String whereClause = COLUMN_ID + " = ?";
+		db.update(TABLE_NAME, values, whereClause, new String[] {"" + seasonId});
+		LOGGER.info("FINISHED UPDATE SEASON: " + seasonId);
 	}
 	
 	public List<Season> getSeasonsFromShow(long showId) {

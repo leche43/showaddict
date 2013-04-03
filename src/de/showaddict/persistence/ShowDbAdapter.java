@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import de.showaddict.entity.MockShow;
 import de.showaddict.entity.Show;
 
@@ -34,13 +35,21 @@ public class ShowDbAdapter extends AbstractDbAdapter {
 	public long createShow(Show show) {
 		ContentValues values = new ContentValues();
 	    values.put(COLUMN_TITLE, show.getTitle());
-
 	    
-	    long insertId = db.insert(TABLE_NAME, null,
-	        values);
-	    
-	    return insertId;
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		queryBuilder.setTables(TABLE_NAME);
+		Cursor cursor = queryBuilder.query(db, null , COLUMN_TITLE+" = ?", new String[] {""+show.getTitle()}, null, null, null);
 		
+		long id;
+		if(! (cursor.moveToFirst()) || cursor.getCount() == 0) {
+		    id = db.insert(TABLE_NAME, null,
+			        values);
+		} else {
+			id = cursor.getLong(0);
+		}
+		cursor.close();
+
+	    return id;
 	}
 	
 	public Show getShow(long showId) {

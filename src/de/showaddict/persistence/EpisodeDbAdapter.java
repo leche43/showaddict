@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import de.showaddict.entity.Episode;
 
 public class EpisodeDbAdapter extends AbstractDbAdapter {
@@ -34,17 +35,39 @@ public class EpisodeDbAdapter extends AbstractDbAdapter {
 		super(context);
 	}
 	
-	public long createEpisode(Episode episode, long seasonId) {
+	public void createEpisode(Episode episode, long seasonId) {
 		ContentValues values = new ContentValues();
 	    values.put(COLUMN_EPISODE, episode.getEpisode());
 	    values.put(COLUMN_WATCHED, episode.getWatched() ? 1 : 0);
 	    values.put(COLUMN_SEASON_FK, seasonId);
-	    long insertId = db.insert(TABLE_NAME, null,
-	        values);
 	    
-	    return insertId;
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		queryBuilder.setTables(TABLE_NAME);
+		Cursor cursor = queryBuilder.query(db, null , COLUMN_EPISODE+" = ? AND " + COLUMN_SEASON_FK + " = ?", 
+				new String[] {episode.getEpisode().toString(), "" + seasonId}, null, null, null);
+		
+		if(! (cursor.moveToFirst()) || cursor.getCount() == 0) {
+		    db.insert(TABLE_NAME, null,
+		    		values);
+		} else {
+			boolean watched = false;
+			if(cursor.getInt(2) == 1) {
+				watched = true;
+			}
+			if(episode.getWatched() != watched) {
+				updateEpisode(values, cursor.getInt(0));
+			}
+		}
+		cursor.close();
 	}
 	
+	private void updateEpisode(ContentValues values, long episodeId) {
+		LOGGER.info("STARTED UPDATE EPISODE: " + episodeId);
+		String whereClause = COLUMN_ID + " = ?";
+		db.update(TABLE_NAME, values, whereClause, new String[] {"" + episodeId});
+		LOGGER.info("FINISHED UPDATE EPISODE: " + episodeId);
+	}
+
 	public List<Episode> getEpisodesFromSeason(long season) {
 		List<Episode> episodes = new ArrayList<Episode>();
 		String whereSelection = "season_fk = ?";
