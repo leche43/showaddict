@@ -1,6 +1,13 @@
 package de.showaddict.entity;
 
-public class Progress {
+import java.io.Serializable;
+
+public class Progress implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7911726711163603697L;
 	
 	private Integer id;
 	private Integer percentage;

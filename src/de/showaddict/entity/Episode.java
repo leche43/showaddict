@@ -1,6 +1,13 @@
 package de.showaddict.entity;
 
-public class Episode {
+import java.io.Serializable;
+
+public class Episode implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1906889129523720466L;
 	
 	private Integer id;
 	private Integer episode;

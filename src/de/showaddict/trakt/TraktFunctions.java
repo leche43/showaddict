@@ -211,7 +211,7 @@ public class TraktFunctions {
 			
 			
 			FileOutputStream fos = context.openFileOutput(fileName, Context.MODE_PRIVATE);
-			image.compress(CompressFormat.JPEG, 100, fos);
+			image.compress(CompressFormat.JPEG, 50, fos);
 			LOGGER.info("STORED IMAGE: " + fileName + " BYTES: " + image.getByteCount());
 			fos.close();
 			

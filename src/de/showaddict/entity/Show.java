@@ -1,8 +1,14 @@
 package de.showaddict.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Show {
+public class Show implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4787898325612388659L;
 	
 	private Integer id;
 	private String title;

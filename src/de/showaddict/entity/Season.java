@@ -1,9 +1,15 @@
 package de.showaddict.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Season {
+public class Season implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5034537360887199352L;
 	
 	private Integer id;
 	private Integer season;

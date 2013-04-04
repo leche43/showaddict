@@ -1,5 +1,7 @@
 package de.showaddict.entity;
 
+import java.io.Serializable;
+
 /**
  * 
  * enthaelt genaue Informationen zur naechsten Episode einer Show
@@ -8,8 +10,13 @@ package de.showaddict.entity;
  * @author Nico
  *
  */
-public class NextEpisode {
+public class NextEpisode implements Serializable {
 	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2133482208359870959L;
 	
 	private Integer id;
 	private Integer season;

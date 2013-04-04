@@ -24,6 +24,14 @@ import de.showaddict.trakt.TraktFunctions;
 public class ListActivity extends FragmentActivity implements ActionBar.OnNavigationListener {
 	
 	public static Logger LOGGER = Logger.getLogger(ListActivity.class.getName());
+	
+	public static final String INITIAL_BUNDLE_ARG = "initial";
+	
+	/**
+	 * only stored for initial loading
+	 */
+	private List<Show> shows;
+	private Boolean initialLoading = false;
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -58,6 +66,7 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
         getSupportFragmentManager().beginTransaction()
         .add(R.id.container, loginFragment).commit();
         isLoggedIn = false;
+        initialLoading = true;
     }
     
     /**
@@ -71,7 +80,8 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
     	tfs.execute();
     }
     
-    public void displayShows() {
+    public void displayShows(List<Show> shows) {
+    	this.shows = shows;
     	isLoggedIn = true;
     	onNavigationItemSelected(0, 0);
     }
@@ -101,6 +111,7 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
     
     @Override
     public boolean onNavigationItemSelected(int position, long id) {
+    	//TODO make sure you cant go back to login fragment with back key
     	Fragment fragment;
     	if(isLoggedIn) {
 	    	if(position == 0) {
@@ -115,7 +126,16 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
 	    	transaction.addToBackStack(null);
 	    	transaction.commit();
 	        Bundle args = new Bundle();
+	        //TODO who should use this?
 	        args.putInt("position", position);
+	        if(initialLoading && fragment instanceof ShowListFragment && shows != null) {
+	        	args.putBoolean(INITIAL_BUNDLE_ARG, true);
+	        	int i = 0;
+	        	for(Show show : shows) {
+	        		args.putSerializable("Show" + i, show);
+	        		++i;
+	        	}
+	        }
 	        fragment.setArguments(args);
 	        return true;
     	}
@@ -123,7 +143,6 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
     }
     
     private class TraktFunctionsService extends AsyncTask<Object, Object, List<Show>> {
-    	List<Show> shows;
     	Context context;
     	
     	public TraktFunctionsService(Context context) {
@@ -132,18 +151,37 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
 
     	@Override
     	protected List<Show> doInBackground(Object... arg0) {
-//    		shows = TraktFunctions.getAllShowsFromLibrary();
     		LOGGER.info("STARTED DOWNLOADING SHOWS");
-    		shows = TraktFunctions.getAllWatchedShowsFromLibrary(context);
+    		List<Show> shows = TraktFunctions.getAllWatchedShowsFromLibrary(context);
     		LOGGER.info("FINISHED DOWNLOADING SHOWS");
-    		Dao dao = new Dao(context);
-    		dao.createShows(shows);
+    		DatabaseService dbService = new DatabaseService(context);
+    		dbService.execute(shows);
     		return shows;
     	}
     	
-    	protected void onPostExecute(List<Show> shows) {
-//            showDialog("Downloaded " + result + " bytes");
-    		displayShows();
+		protected void onPostExecute(List<Show> shows) {
+    		displayShows(shows);
+        }
+    }
+    
+    private class DatabaseService extends AsyncTask<List<Show>, Void, Boolean> {
+    	Context context;
+    	
+    	public DatabaseService(Context context) {
+    		this.context = context;
+    	}
+
+    	@Override
+    	protected Boolean doInBackground(List<Show>... arg0) {
+    		LOGGER.info("STARTED STORE SHOWS TO DATABASE");
+    		Dao dao = new Dao(context);
+    		dao.createShows(arg0[0]);
+    		LOGGER.info("FINISHED STORE SHOWS TO DATABASE");
+    		return true;
+    	}
+    	
+		protected void onPostExecute(Boolean stored) {
+			//TODO is anything to do here?
         }
     }
 }
