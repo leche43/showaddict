@@ -160,6 +160,7 @@ public class ListActivity extends FragmentActivity implements ActionBar.OnNaviga
     	}
     	
 		protected void onPostExecute(List<Show> shows) {
+			//TODO there has to be another way to push the shows to the list activity
     		displayShows(shows);
         }
     }
